@@ -12,6 +12,7 @@ let game = {
   tileCountX: 0,
   tileCountY: 0,
   speed: 100, // ms per update, 100 ms => 10 frames/sec
+  directionChanged: false
 };
 
 function setup() {
@@ -24,6 +25,7 @@ function setup() {
 function draw() {
   drawGame();
   updateGame();
+  game.directionChanged = false; // reset the flag at the start of each frame
 }
 
 function updateGame() {
@@ -62,6 +64,15 @@ function updateGame() {
 
 function drawGame() {
   background(0);
+
+    // draw field tiles
+    stroke(25); // Set the color of the grid lines
+    for (let x = 0; x < width; x += game.tileSize) {
+      for (let y = 0; y < height; y += game.tileSize) {
+        fill(15); // Set the color of the tiles
+        rect(x, y, game.tileSize, game.tileSize);
+      }
+    }
 
   // draw snake
   fill(0, 255, 0);
@@ -122,14 +133,20 @@ function resetGame() {
 
 // handle keyboard input for directions
 function keyPressed() {
-  if (keyCode === UP_ARROW && game.direction.y === 0) {
-    game.direction = { x: 0, y: -1 };
-  } else if (keyCode === DOWN_ARROW && game.direction.y === 0) {
-    game.direction = { x: 0, y: 1 };
-  } else if (keyCode === LEFT_ARROW && game.direction.x === 0) {
-    game.direction = { x: -1, y: 0 };
-  } else if (keyCode === RIGHT_ARROW && game.direction.x === 0) {
-    game.direction = { x: 1, y: 0 };
+  if (!game.directionChanged) {
+    if (keyCode === UP_ARROW && game.direction.y === 0) {
+      game.direction = { x: 0, y: -1 };
+      game.directionChanged = true;
+    } else if (keyCode === DOWN_ARROW && game.direction.y === 0) {
+      game.direction = { x: 0, y: 1 };
+      game.directionChanged = true;
+    } else if (keyCode === LEFT_ARROW && game.direction.x === 0) {
+      game.direction = { x: -1, y: 0 };
+      game.directionChanged = true;
+    } else if (keyCode === RIGHT_ARROW && game.direction.x === 0) {
+      game.direction = { x: 1, y: 0 };
+      game.directionChanged = true;
+    }
   }
 }
 
