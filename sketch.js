@@ -196,6 +196,36 @@ function mousePressed() {
   }
 }
 
+// handle touch input for directions
+// to support touch based input on mobile devices
+function touchMoved() {
+  if (!game.directionChanged) {
+    let deltaX = winMouseX - pwinMouseX;
+    let deltaY = winMouseY - pwinMouseY;
+
+    if (abs(deltaX) > abs(deltaY)) {
+      // Horizontal movement
+      if (deltaX > 0 && game.direction.x === 0) {
+        game.direction = { x: 1, y: 0 }; // Move right
+        game.directionChanged = true;
+      } else if (deltaX < 0 && game.direction.x === 0) {
+        game.direction = { x: -1, y: 0 }; // Move left
+        game.directionChanged = true;
+      }
+    } else {
+      // Vertical movement
+      if (deltaY > 0 && game.direction.y === 0) {
+        game.direction = { x: 0, y: 1 }; // Move down
+        game.directionChanged = true;
+      } else if (deltaY < 0 && game.direction.y === 0) {
+        game.direction = { x: 0, y: -1 }; // Move up
+        game.directionChanged = true;
+      }
+    }
+  }
+  return false; // Prevent default behavior
+}
+
 // handle window resizing
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
