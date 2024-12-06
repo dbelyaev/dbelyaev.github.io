@@ -16,7 +16,11 @@ let game = {
   highlightEnabled: false, // flag to control higlights for direction
 };
 
+// vars for headlight text position and size
 let headlightTextX, headlightTextY, headlightTextWidth, headlightTextHeight;
+
+// array to store the cheat code sequence
+let keySequence = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -207,6 +211,25 @@ function keyPressed() {
     } else if (keyCode === RIGHT_ARROW && game.direction.x === 0) {
       game.direction = { x: 1, y: 0 };
       game.directionChanged = true;
+    }
+  }
+
+  // read cheat code
+  // get the character of the key pressed
+  let keyChar = key.toLowerCase();
+  // add the key to the sequence array
+  keySequence.push(keyChar);
+  // keep only the last 5 keys
+  if (keySequence.length > 5) {
+    keySequence.shift();
+  }
+  // check if the sequence matches 'iddqd'
+  if (keySequence.join("") === "iddqd") {
+    // extend the snake's length to 10
+    while (game.snake.length < 30) {
+      // add new segments at the tail
+      let tail = game.snake[game.snake.length - 1];
+      game.snake.push({ x: tail.x, y: tail.y });
     }
   }
 }
