@@ -13,7 +13,7 @@ let game = {
   tileCountY: 0,
   speed: 100, // ms per update, 100 ms => 10 frames/sec
   directionChanged: false,
-  highlightEnabled: false // flag to control higlights for direction
+  highlightEnabled: false, // flag to control higlights for direction
 };
 
 function setup() {
@@ -81,25 +81,38 @@ function drawGame() {
         if (highlightRow !== null && y / game.tileSize === highlightRow) {
           if (game.direction.x > 0 && x / game.tileSize > game.snake[0].x) {
             highlight = true; // Highlight tiles to the right of the snake's head
-            distance = (x / game.tileSize) - game.snake[0].x;
-          } else if (game.direction.x < 0 && x / game.tileSize < game.snake[0].x) {
+            distance = x / game.tileSize - game.snake[0].x;
+          } else if (
+            game.direction.x < 0 &&
+            x / game.tileSize < game.snake[0].x
+          ) {
             highlight = true; // Highlight tiles to the left of the snake's head
-            distance = game.snake[0].x - (x / game.tileSize);
+            distance = game.snake[0].x - x / game.tileSize;
           }
-        } else if (highlightCol !== null && x / game.tileSize === highlightCol) {
+        } else if (
+          highlightCol !== null &&
+          x / game.tileSize === highlightCol
+        ) {
           if (game.direction.y > 0 && y / game.tileSize > game.snake[0].y) {
             highlight = true; // Highlight tiles below the snake's head
-            distance = (y / game.tileSize) - game.snake[0].y;
-          } else if (game.direction.y < 0 && y / game.tileSize < game.snake[0].y) {
+            distance = y / game.tileSize - game.snake[0].y;
+          } else if (
+            game.direction.y < 0 &&
+            y / game.tileSize < game.snake[0].y
+          ) {
             highlight = true; // Highlight tiles above the snake's head
-            distance = game.snake[0].y - (y / game.tileSize);
+            distance = game.snake[0].y - y / game.tileSize;
           }
         }
       }
 
       if (highlight && distance <= 10) {
         let alpha = map(distance, 0, 10, 255, 50); // Fade out with distance
-        fill(30 + (50 - 30) * (alpha / 255), 30 + (50 - 30) * (alpha / 255), 30 + (50 - 30) * (alpha / 255)); // Blend highlight color with general tile color
+        fill(
+          30 + (50 - 30) * (alpha / 255),
+          30 + (50 - 30) * (alpha / 255),
+          30 + (50 - 30) * (alpha / 255)
+        ); // Blend highlight color with general tile color
       } else {
         fill(30); // Set the color of the tiles
       }
@@ -127,11 +140,11 @@ function drawGame() {
     game.tileSize
   );
 
-    // Draw the clickable text
-    fill(255);
-    textSize(20);
-    textAlign(LEFT, TOP);
-    text(`Headlights: ${game.highlightEnabled ? 'ON' : 'OFF'}`, 10, 10);
+  // Draw the clickable text
+  fill(255);
+  textSize(20);
+  textAlign(LEFT, TOP);
+  text(`Headlights: ${game.highlightEnabled ? "ON" : "OFF"}`, 10, 10);
 
   // scale text size proportionally to window size and draw it
   textSize(min(width, height) * 0.03);
