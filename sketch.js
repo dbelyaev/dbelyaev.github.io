@@ -16,6 +16,8 @@ let game = {
   highlightEnabled: false, // flag to control higlights for direction
 };
 
+let headlightTextX, headlightTextY, headlightTextWidth, headlightTextHeight;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(1000 / game.speed);
@@ -141,10 +143,17 @@ function drawGame() {
   );
 
   // Draw the clickable text
+  textSize(min(width, height) * 0.03);
   fill(255);
-  textSize(20);
   textAlign(LEFT, TOP);
-  text(`Headlights: ${game.highlightEnabled ? "ON" : "OFF"}`, 10, 10);
+  headlightTextX = 10;
+  headlightTextY = 10;
+  const headlightText = `Headlights: ${game.highlightEnabled ? "ON" : "OFF"}`;
+  text(headlightText, headlightTextX, headlightTextY);
+
+  // Calculate text width and height
+  headlightTextWidth = textWidth(headlightText);
+  headlightTextHeight = textAscent() + textDescent();
 
   // scale text size proportionally to window size and draw it
   textSize(min(width, height) * 0.03);
@@ -204,7 +213,12 @@ function keyPressed() {
 
 function mousePressed() {
   // Check if the mouse is over the "Headlights" text
-  if (mouseX >= 10 && mouseX <= 150 && mouseY >= 10 && mouseY <= 30) {
+  if (
+    mouseX >= headlightTextX &&
+    mouseX <= headlightTextX + headlightTextWidth &&
+    mouseY >= headlightTextY &&
+    mouseY <= headlightTextY + headlightTextHeight
+  ) {
     game.highlightEnabled = !game.highlightEnabled;
   }
 }
